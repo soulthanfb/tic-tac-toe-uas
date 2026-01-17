@@ -15,12 +15,24 @@
     "electron-builder": "^24.13.3"
   },
   "build": {
-  "appId": "com.weds.tictactoe",
-  "productName": "Tic Tac Toe",
-  "directories": { "output": "release" },
-  "files": ["**/*"],
-  "win": { "target": "nsis" },
-  "publish": [{ "provider": "github" }]
-}
-
+    "appId": "com.weds.tictactoe",
+    "productName": "Tic Tac Toe",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "**/*"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "publish": [
+      {
+        "provider": "github"
+      }
+    ]
+  },
+  "dependencies": {
+    "electron-updater": "^6.7.3"
+  }
 }
