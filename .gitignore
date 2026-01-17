@@ -1,7 +1,23 @@
+# dependencies
 node_modules/
+
+# build outputs
 release/
 dist/
 out/
 *.exe
+*.msi
 *.yml
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# editor / OS
 .vscode/
+.DS_Store
+Thumbs.db
+
+# electron-builder cache
+.cache/
