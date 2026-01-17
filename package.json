@@ -28,7 +28,9 @@
     },
     "publish": [
       {
-        "provider": "github"
+        "provider": "github",
+        "owner": "soulthanfb",
+        "repo": "tic-tac-toe-uas"
       }
     ]
   },
