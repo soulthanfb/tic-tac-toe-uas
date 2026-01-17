@@ -1,0 +1,26 @@
+{
+  "name": "tic-tac-toe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "electron-main.js",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+  "appId": "com.weds.tictactoe",
+  "productName": "Tic Tac Toe",
+  "directories": { "output": "release" },
+  "files": ["**/*"],
+  "win": { "target": "nsis" },
+  "publish": [{ "provider": "github" }]
+}
+
+}

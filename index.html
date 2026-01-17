@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tic Tac Toe</title>
+  <link rel="icon" type="image/png" href="./assets/favicon.png" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body data-theme="normal" data-skin="neon">
+  <header class="topbar simple">
+    <div class="titleWrap">
+      <div class="title">TIC TAC TOE</div>
+      <div class="subtitle" id="modeText">Pilih lawan</div>
+    </div>
+
+    <div class="topRight">
+      <div class="emerald">💎 <span id="emeraldValue">0</span></div>
+      <button id="btnNav" class="navBtn" title="Menu">☰</button>
+    </div>
+  </header>
+
+  <!-- NAV DRAWER -->
+  <div id="navOverlay" class="navOverlay hidden"></div>
+
+  <aside id="navDrawer" class="navDrawer hidden" aria-hidden="true">
+    <div class="navHead">
+      <div class="navTitle">Menu</div>
+      <button id="btnNavClose" class="navClose" title="Tutup">✕</button>
+    </div>
+
+    <div class="navSection">
+      <div class="navLabel">Navigasi</div>
+      <div class="navLinks">
+        <button class="navLink active" data-nav="statsTab">📊 Statistik</button>
+        <button class="navLink" data-nav="leaderTab">🏆 Leaderboard</button>
+        <button class="navLink" data-nav="infoTab">ℹ️ Info</button>
+      </div>
+    </div>
+
+    <div class="navSection">
+      <div class="navLabel">Audio</div>
+      <div class="soundRow">
+        <button id="btnMute" class="iconBtn2" title="Mute / Unmute">🔊</button>
+        <input id="volSlider" class="volSlider" type="range" min="0" max="100" value="80" />
+      </div>
+    </div>
+
+    <div class="navSection">
+  <div class="navLabel">Aplikasi</div>
+
+  <div class="navLinks">
+    <button id="btnFullscreen" class="navLink" type="button">🖥️ Fullscreen</button>
+    <button id="btnCheckUpdate" class="navLink" type="button">⬆️ Check Update</button>
+  </div>
+
+  <div id="updateStatus" class="smallNote" style="margin-top:8px;">Status: -</div>
+</div>
+
+
+
+    <div class="navSection">
+      <div class="navLabel">Pengaturan</div>
+      <div class="settingsRow oneCol">
+        <label class="setItem">
+          <span>Skin</span>
+          <select id="skinSelect">
+            <option value="neon">Neon</option>
+            <option value="retro">Retro</option>
+            <option value="candy">Candy</option>
+            <option value="classic">Classic</option>
+          </select>
+        </label>
+
+        <label class="setItem">
+          <span>Mode</span>
+          <select id="bestOfSelect">
+            <option value="1">Normal (1 round)</option>
+            <option value="3">Best of 3</option>
+            <option value="5">Best of 5</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="navSection">
+      <div class="navLabel">Info</div>
+      <div class="smallNote">Semua data tersimpan otomatis di browser.</div>
+    </div>
+  </aside>
+
+  <main class="screenWrap">
+    <!-- ===================== MENU ===================== -->
+    <section id="screenMenu" class="screen active">
+      <!-- SIZE -->
+      <div class="card big">
+        <h2 class="h2">Pilih Ukuran Papan</h2>
+
+        <div class="carousel" id="sizeCarousel">
+          <button class="carBtn" id="carPrev">‹</button>
+
+          <div class="carViewport" id="carViewport">
+            <div class="carSlide">
+              <img class="carImg" src="./assets/board_3.png" alt="3x3" />
+              <div class="carLabel">3 × 3</div>
+            </div>
+            <div class="carSlide">
+              <img class="carImg" src="./assets/board_6.png" alt="6x6" />
+              <div class="carLabel">6 × 6</div>
+            </div>
+            <div class="carSlide">
+              <img class="carImg" src="./assets/board_9.png" alt="9x9" />
+              <div class="carLabel">9 × 9</div>
+            </div>
+            <div class="carSlide">
+              <img class="carImg" src="./assets/board_11.png" alt="11x11" />
+              <div class="carLabel">11 × 11</div>
+            </div>
+          </div>
+
+          <button class="carBtn" id="carNext">›</button>
+        </div>
+
+        <div class="carDots" id="carDots"></div>
+        <div class="smallNote" id="sizeHint">Win: 3 beruntun</div>
+      </div>
+
+      <!-- RANK -->
+      <div class="card">
+        <div class="rankRow">
+          <div>
+            <div class="rankTitle">Rank</div>
+            <div class="rankName" id="rankName">BRONZE</div>
+            <div class="rankNext" id="rankNext">100 💎 lagi ke SILVER</div>
+          </div>
+
+          <div class="rankBarWrap">
+            <div class="rankBar" id="rankBar"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPPONENT -->
+      <div class="card big">
+        <h2 class="h2">2 PLAYER BATTLE</h2>
+        <div class="btnRow">
+          <button id="btnVsBot" class="btn primary">👤 VS 🤖</button>
+          <button id="btnVsHuman" class="btn">👤 VS 👤</button>
+        </div>
+      </div>
+
+      <div class="card big">
+  
+
+
+      <!-- CONTENT (Stat / Leaderboard / Info) -->
+      <div class="card big">
+
+        <!-- Statistik -->
+        <div id="statsTab" class="tabPanel active">
+          <h3 class="h3">Statistik</h3>
+
+          <div class="scoreGrid">
+            <div class="scoreItem">
+              <div class="scoreLabel">Player Wins</div>
+              <div class="scoreValue" id="scoreWins">0</div>
+            </div>
+            <div class="scoreItem">
+              <div class="scoreLabel">Losses</div>
+              <div class="scoreValue" id="scoreLosses">0</div>
+            </div>
+            <div class="scoreItem">
+              <div class="scoreLabel">Draws</div>
+              <div class="scoreValue" id="scoreDraws">0</div>
+            </div>
+          </div>
+
+          <div class="statGrid">
+            <div class="statItem"><span>Matches</span><b id="statMatches">0</b></div>
+            <div class="statItem"><span>Win rate</span><b id="statWinRate">0%</b></div>
+            <div class="statItem"><span>Streak</span><b id="statStreak">0</b></div>
+            <div class="statItem"><span>Best streak</span><b id="statBestStreak">0</b></div>
+            <div class="statItem"><span>Blue champion</span><b id="statChampX">0</b></div>
+            <div class="statItem"><span>Red champion</span><b id="statChampO">0</b></div>
+          </div>
+
+          <div class="smallNote">Buka menu ☰ untuk Leaderboard, Statistik, Info, Skin, Best of, dan Audio.</div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div id="leaderTab" class="tabPanel">
+          <h3 class="h3">Leaderboard (Local)</h3>
+          <div id="leaderboardList" class="leaderboardList"></div>
+          <div class="smallNote">Scroll untuk melihat riwayat hadiah yang lebih lama.</div>
+        </div>
+
+        <!-- Info -->
+        <div id="infoTab" class="tabPanel">
+          <h3 class="h3">Info</h3>
+
+        <div class="infoBox">
+            <h4 class="h4">Cara main</h4>
+        <ul class="infoList">
+      <li>Pilih ukuran papan (3×3 / 6×6 / 9×9 / 11×11).</li>
+      <li>Pilih lawan: VS Bot atau VS Human.</li>
+      <li>Jika VS Bot, pilih difficulty (Easy/Normal/Hard).</li>
+      <li>Menang = membuat garis beruntun sesuai aturan Win.</li>
+      <li>Setiap menang dapat +20 💎, skor tersimpan otomatis di browser.</li>
+    </ul>
+
+    <h4 class="h4">Spesifikasi perangkat</h4>
+    <div class="specGrid">
+      <div class="specCard">
+        <div class="specTitle">Laptop/PC (Browser)</div>
+        <div class="specLine"><b>Minimum:</b> Dual-core, RAM 2 GB</div>
+        <div class="specLine"><b>Rekomendasi:</b> RAM 4 GB+</div>
+        <div class="specLine"><b>Browser:</b> Chrome / Edge / Firefox terbaru</div>
+      </div>
+
+      <div class="specCard">
+        <div class="specTitle">Android / iPhone (Browser)</div>
+        <div class="specLine"><b>Minimum:</b> RAM 2 GB</div>
+        <div class="specLine"><b>Rekomendasi:</b> RAM 3–4 GB+</div>
+        <div class="specLine"><b>Browser:</b> Chrome / Safari terbaru</div>
+      </div>
+    </div>
+
+    <h4 class="h4">Penyimpanan</h4>
+    <ul class="infoList">
+      <li><b>Game web:</b> sekitar <b>5–30 MB</b> (tergantung gambar & sound).</li>
+      <li><b>Data tersimpan (LocalStorage):</b> sangat kecil, biasanya <b>&lt; 1 MB</b>.</li>
+    </ul>
+
+    <div class="smallNote">
+      Catatan: ukuran papan besar (9×9 / 11×11) butuh perangkat sedikit lebih kuat untuk animasi & bot hard.
+    </div>
+  </div>
+      </div>
+    </div>
+      
+    </section>
+
+    <!-- ===================== DIFFICULTY ===================== -->
+    <section id="screenDifficulty" class="screen">
+      <div class="card big">
+        <h2 class="h2">Pilih Kesulitan Bot</h2>
+
+        <div class="diffAvatar" id="diffAvatar">🙂</div>
+        <div class="diffName" id="diffName">NORMAL</div>
+        <div class="diffHint">Swipe/drag untuk pilih difficulty</div>
+
+        <div class="slider" id="diffSlider">
+          <div class="sliderTrack"></div>
+          <div class="sliderFill" id="diffFill"></div>
+          <div class="sliderStops">
+            <span>EASY</span>
+            <span>NORMAL</span>
+            <span>HARD</span>
+          </div>
+          <button class="sliderThumb" id="diffThumb" type="button"></button>
+        </div>
+
+        <button id="btnPlayDiff" class="btn play">PLAY</button>
+        <div class="smallNote">Tip: kamu bisa klik posisi slider juga.</div>
+      </div>
+    </section>
+
+    <!-- ===================== GAME ===================== -->
+    <section id="screenGame" class="screen">
+      <div class="gameHUD">
+        <div>
+          <div class="turnText" id="turnText">Your turn</div>
+          <div class="seriesText" id="seriesText"></div>
+        </div>
+
+        <div class="hudBtns">
+          <button id="btnPause" class="btn small">⏸ Pause</button>
+          <button id="btnRestart" class="btn small">Restart</button>
+        </div>
+      </div>
+
+      <div class="board" id="board"></div>
+
+      <div class="legend">
+        <span class="pill">Player: <b>X</b></span>
+        <span class="pill">Opponent: <b>O</b></span>
+      </div>
+    </section>
+  </main>
+
+  <!-- WIN BANNER -->
+  <div id="winBanner" class="winBanner hidden">
+    <div class="winText" id="winText">BLUE WIN</div>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div id="countdownOverlay" class="overlay hidden">
+    <div class="countNumber" id="countNumber">3</div>
+  </div>
+
+  <!-- PAUSE -->
+  <div id="pauseOverlay" class="overlay hidden">
+    <div class="modal">
+      <button id="btnResume" class="btn primary">Resume</button>
+      <button id="btnMenu" class="btn">Menu</button>
+      <button id="btnRestart2" class="btn">Restart</button>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
